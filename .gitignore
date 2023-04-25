@@ -162,3 +162,4 @@ cython_debug/
 music
 config
 .idea
+/voices

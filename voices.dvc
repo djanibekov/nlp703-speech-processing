@@ -1,0 +1,5 @@
+outs:
+- md5: 3944a7a89e42e747e7db80732e7ff4c5.dir
+  size: 17
+  nfiles: 1
+  path: voices
