@@ -163,3 +163,4 @@ music
 config
 .idea
 /voices
+*.mp3
