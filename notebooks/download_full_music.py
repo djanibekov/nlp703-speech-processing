@@ -5,9 +5,7 @@ import pandas as pd
 from tqdm import tqdm
 
 
-data = pd.read_csv('/home/akhmed.sakip/Documents/NLP703/Project/nlp703-speech-processing/csv/all_music_genre_wo_text.csv', encoding='UTF-8')
-data.info()
-
+data = pd.read_csv('/home/amirbek.djanibekov/Documents/nlp703/project/nlp703-speech-processing/csv/usa_music_genre_wo_text.csv', encoding='UTF-8')
 data['link'] = data['ondblclick'].apply(
     lambda x: (
             re.search(r'(?P<link>https.*)",',x) or
@@ -22,17 +20,16 @@ data['domain'] = data['ondblclick'].apply(
 )
 
 data['domain'].value_counts(normalize=True)
-
 youtube = data[data['domain'] == 'youtube']
-youtube
 
 def download_from_youtube(row):
+    print('start')
     # time.sleep(5)
     try:
         yt = YouTube(row['link'])
         video = yt.streams.filter(only_audio=True).first()
 
-        destination = 'music-full/'
+        destination = f'music-full/{row["class"]}/'
         out_file = video.download(output_path=destination)
 
         os.rename(out_file, destination + row["id"] + '.mp3')
@@ -47,4 +44,4 @@ def download_from_youtube(row):
 
 tqdm.pandas()
 # instantiate
-youtube[:2443].progress_apply(download_from_youtube, axis=1)
+youtube.progress_apply(download_from_youtube, axis=1)
