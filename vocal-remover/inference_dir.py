@@ -137,7 +137,7 @@ def main():
 
     files = os.listdir(args.input_dir)
     for file in files:
-        path = args.input_dir + file
+        path = os.path.join(args.input_dir, file)
         
         print('loading wave source...', end=' ')
         X, sr = librosa.load(
