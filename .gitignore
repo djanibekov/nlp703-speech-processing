@@ -159,20 +159,29 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-music
-config
-.idea
-/voices
-*.mp3
-*.wav
-music-full/
-notebooks/.hydra/
-notebooks/checkpoint/
-notebooks/music_dataset
-notebooks/fairseq
-notebooks/feat/
-notebooks/hubert_large_ll60k.pt
-notebooks/outputs/
-notebooks/test_trainer/
-notebooks/tsv/
-notebooks/wav2vec2-unsupervised/
+# music
+# config
+# .idea
+# /voices
+# *.mp3
+# *.wav
+# music-full/
+# notebooks/.hydra/
+# notebooks/checkpoint/
+# notebooks/music_dataset
+# notebooks/fairseq
+# notebooks/feat/
+# notebooks/hubert_large_ll60k.pt
+# notebooks/outputs/
+# notebooks/test_trainer/
+# notebooks/tsv/
+# notebooks/wav2vec2-unsupervised/
+
+wav2vec2/Amir_infer.py
+wav2vec2/finetune.py
+wav2vec2/berkeley-checkpoint/
+wav2vec2/ravdess-checkpoint/
+endtoend/segmentation.ipynb
+endtoend/inference.ipynb
+input/*
+endtoend/intermediate/
