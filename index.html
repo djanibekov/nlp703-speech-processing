@@ -131,9 +131,9 @@
         }
         
         async function loadSegments() {
-            const instrCSV = "intermediate/csv/instr_vocal_emotions.csv";
-            const instSegmentsCSV = "intermediate/csv/instruments_segments.csv";
-            const vocalSegmentsCSV = "intermediate/csv/vocals_segments.csv";
+            const instrCSV = "examples/Kazakhstan-Anthem/intermediate/csv/instr_vocal_emotions.csv";
+            const instSegmentsCSV = "examples/Kazakhstan-Anthem/intermediate/csv/instruments_segments.csv";
+            const vocalSegmentsCSV = "examples/Kazakhstan-Anthem/intermediate/csv/vocals_segments.csv";
 
             const instrEmotions = await fetchCSV(instrCSV, "emotions");
             const instSegments = await fetchCSV(instSegmentsCSV);
