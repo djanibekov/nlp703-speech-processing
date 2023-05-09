@@ -178,7 +178,6 @@ cython_debug/
 # notebooks/wav2vec2-unsupervised/
 
 wav2vec2/Amir_infer.py
-wav2vec2/finetune.py
 wav2vec2/berkeley-checkpoint/
 wav2vec2/ravdess-checkpoint/
 endtoend/segmentation.ipynb
