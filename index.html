@@ -45,17 +45,22 @@
         ];
         const linksDiv = document.getElementById('links');
 
-        directories.forEach(item => {
-            fetch(`examples/${item.dir}/align.html`)
-                .then(response => {
-                    if(response.ok) {
-                        const link = document.createElement('a');
-                        link.href = `examples/${item.dir}/align.html`;
-                        link.textContent = item.text;
-                        linksDiv.appendChild(link);
-                        linksDiv.appendChild(document.createElement('br'));
-                    }
-                });
+        Promise.all(
+            directories.map(item =>
+                fetch(`examples/${item.dir}/align.html`)
+                    .then(response => response.ok ? { href: `examples/${item.dir}/align.html`, text: item.text } : null)
+            )
+        )
+        .then(links => {
+            links.forEach(link => {
+                if (link) {
+                    const a = document.createElement('a');
+                    a.href = link.href;
+                    a.textContent = link.text;
+                    linksDiv.appendChild(a);
+                    linksDiv.appendChild(document.createElement('br'));
+                }
+            });
         });
     </script>
     <h3>All copyrights belong to their respective owners.</h3>
