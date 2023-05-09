@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Alignments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .heading {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .spacer {
+            height: 0%;
+        }        
+        .segment {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 160px;
+        }        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }        
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="heading">NLP703 Project</h1>
+    <h2 class="heading">Olivia Rodrigo - Traitor</h2>
+    <h3 class="heading">Akhmed Sakip, Amirbek Djanibekov</h3>
+    <script>
+        async function fetchCSV(url, type) {
+            const response = await fetch(url);
+            const text = await response.text();
+            const rows = text.split("\n").slice(1).filter(row => row.trim() !== "");
+        
+            if (type === "emotions") {
+                return rows.map(row => {
+                    const columns = row.split(",");
+                    return {
+                        segment_number: parseInt(columns[0]),
+                        instrument_emotion: columns[1]?.trim() || "-",
+                        vocal_emotion: columns[2]?.trim() || "-"
+                    };
+                });
+            } else {
+                return rows.map(row => {
+                    const columns = row.split(",");
+                    return {
+                        path: columns[0],
+                        segment_number: parseInt(columns[1])
+                    };
+                });
+            }
+        }
+
+        function createAudioButton(path) {
+            const button = document.createElement("button");
+            button.textContent = "Play";
+            let audio = new Audio(path);
+        
+            // Add the event listener for the 'ended' event
+            audio.addEventListener('ended', () => {
+                button.textContent = "Play";
+            });
+        
+            button.onclick = () => {
+                if (button.textContent === "Play") {
+                    audio.play();
+                    button.textContent = "Stop";
+                } else {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    button.textContent = "Play";
+                }
+            };
+        
+            return button;
+        }
+
+        function createPlayTogetherButton(instrPath, vocalPath) {
+            const button = document.createElement("button");
+            button.textContent = "▷Together";
+        
+            let instrAudio = new Audio(instrPath);
+            let vocalAudio = vocalPath ? new Audio(vocalPath) : null;
+        
+            instrAudio.addEventListener('ended', () => {
+                button.textContent = "▷Together";
+            });
+        
+            if (vocalAudio) {
+                vocalAudio.addEventListener('ended', () => {
+                    button.textContent = "▷Together";
+                });
+            }
+        
+            button.onclick = () => {
+                if (button.textContent === "▷Together") {
+                    instrAudio.play();
+                    if (vocalAudio) {
+                        vocalAudio.play();
+                    }
+                    button.textContent = "Stop";
+                } else {
+                    instrAudio.pause();
+                    instrAudio.currentTime = 0;
+                    if (vocalAudio) {
+                        vocalAudio.pause();
+                        vocalAudio.currentTime = 0;
+                    }
+                    button.textContent = "▷Together";
+                }
+            };
+        
+            return button;
+        }
+        
+        async function loadSegments() {
+            const instrCSV = "intermediate/csv/instr_vocal_emotions.csv";
+            const instSegmentsCSV = "intermediate/csv/instruments_segments.csv";
+            const vocalSegmentsCSV = "intermediate/csv/vocals_segments.csv";
+
+            const instrEmotions = await fetchCSV(instrCSV, "emotions");
+            const instSegments = await fetchCSV(instSegmentsCSV);
+            const vocalSegments = await fetchCSV(vocalSegmentsCSV);
+
+            const exampleDiv = document.createElement("div");
+            exampleDiv.className = "segment";
+
+            const exampleTextDiv = document.createElement("div");
+            exampleTextDiv.textContent = "Instrumental emotion";
+            exampleDiv.appendChild(exampleTextDiv);
+
+            const exampleVocalText = document.createElement("div");
+            exampleVocalText.textContent = "Vocal emotion";
+            exampleDiv.appendChild(exampleVocalText);
+
+            document.body.appendChild(exampleDiv);
+
+            instrEmotions.forEach(({ segment_number, instrument_emotion, vocal_emotion }) => {
+                const segmentDiv = document.createElement("div");
+                segmentDiv.className = "segment";
+            
+                const instSegment = instSegments.find(s => s.segment_number === segment_number);
+                if (instSegment) {
+                    const playButton = createAudioButton(instSegment.path);
+                    segmentDiv.appendChild(playButton);
+                }
+            
+                const instrEmotionDiv = document.createElement("div");
+                instrEmotionDiv.textContent = instrument_emotion;
+                segmentDiv.appendChild(instrEmotionDiv);
+            
+                const spacer1 = document.createElement("div");
+                spacer1.className = "spacer";
+                segmentDiv.appendChild(spacer1);
+            
+                const vocalSegment = vocalSegments.find(s => s.segment_number === segment_number);
+            
+                const playTogetherButton = createPlayTogetherButton(instSegment.path, vocalSegment ? vocalSegment.path : null);
+                segmentDiv.appendChild(playTogetherButton);
+            
+                const spacer2 = document.createElement("div");
+                spacer2.className = "spacer";
+                segmentDiv.appendChild(spacer2);
+            
+                const vocalEmotionDiv = document.createElement("div");
+                vocalEmotionDiv.textContent = vocal_emotion;
+                segmentDiv.appendChild(vocalEmotionDiv);
+            
+                const buttonContainer = document.createElement("div");
+                buttonContainer.className = "button-container";
+            
+                if (vocalSegment && vocal_emotion !== "-") {
+                    const playButton = createAudioButton(vocalSegment.path);
+                    buttonContainer.appendChild(playButton);
+                } else {
+                    const placeholderDiv = document.createElement("div");
+                    placeholderDiv.style.height = "38px"; // Adjust this value to match the height of the "Play" button
+                    buttonContainer.appendChild(placeholderDiv);
+                }
+            
+                segmentDiv.appendChild(buttonContainer);
+            
+                document.body.appendChild(segmentDiv);
+            });
+            
+        }
+
+        loadSegments();
+    </script>
+</body>
+</html>
