@@ -1,14 +1,14 @@
 datasets==2.12.0
 evaluate==0.4.0
 ipython==8.12.0
+lib==4.0.0
 librosa==0.8.1
 matplotlib==3.7.1
 numpy==1.23.5
-opencv_python==4.7.0.72
 pandas==2.0.1
 scikit_learn==1.2.2
 soundfile==0.12.1
-# torch==2.0.0+cu118
-# torchaudio==2.0.1+cu118
+# torch==2.0.1+cu117
+# torchaudio==2.0.2+cu117
 tqdm==4.65.0
 transformers==4.28.1
