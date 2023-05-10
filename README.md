@@ -2,6 +2,9 @@
 ## Course Project
 ## By Akhmed Sakip and Amirbek Djanibekov
 
+### Demo
+The demo with 10 example songs can be accessed [here](https://djanibekov.github.io/nlp703-speech-processing/).
+
 ### Setting up the environment
 First, create a separate conda environment with Python=3.8 to run this project:
 
