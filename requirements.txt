@@ -11,3 +11,4 @@ soundfile==0.12.1
 # torchaudio==2.0.2+cu117
 tqdm==4.65.0
 transformers==4.28.1
+opencv_python>=4.2.0
